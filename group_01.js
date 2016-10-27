@@ -7,23 +7,26 @@ var mayella = ["Mayella", "89068", "35000", 2];
 
 var employees = [atticus, jem, boo, scout, robert, mayella];
 
-for(var i =0; i < employees.length; i++){
-  var employee = employees[i];
+employees.forEach(function(employee){
   console.log(bonusArrayBuilder(employee));
-}
+});
 
 function bonusArrayBuilder(employee){
   var employeeName = employee[0];
   var employeeNumber = employee[1];
-  var employeeSalary = employee[2];
+  var employeeSalary = parseInt(employee[2]);
   var employeePerformace = employee[3];
 
   var bonusPercentage = basePerformanceBonusCalulator(employeePerformace);
   bonusPercentage += employeeLongevityBonus(employeeNumber);
   bonusPercentage -= maxSalaryDeduction(employeeSalary);
+  bonusPercentage = checkMaxAndMin(bonusPercentage);
 
+  var bonus = employeeSalary * bonusPercentage;
+  var totalCompensation = employeeSalary + bonus;
+  var roundedBonus = Math.round(bonus);
 
-  return [employeeName, bonusPercentage];
+  return [employeeName, bonusPercentage, totalCompensation, roundedBonus];
 }
 
 function basePerformanceBonusCalulator(employeePerformace) {
@@ -56,4 +59,10 @@ function maxSalaryDeduction(employeeSalary) {
     deduction = 0.01;
   }
   return deduction;
+}
+
+function checkMaxAndMin(bonusPercentage){
+  bonusPercentage = Math.min(bonusPercentage, .13);
+  bonusPercentage = Math.max(bonusPercentage, 0);
+  return bonusPercentage;
 }
